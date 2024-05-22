@@ -11,6 +11,7 @@
       "to": "#07C983"
     }
   },
+  "openapi": "api-reference/openapi.json",
   "topbarLinks": [
     {
       "name": "Support",
@@ -38,6 +39,47 @@
       "group": "API Documentation",
       "pages": [
         "api-reference/introduction"
+      ]
+    },
+    {
+      "group": "Assets",
+      "pages": [
+        "assets/create-assets",
+        "assets/energy-baseline-at",
+        "assets/energy-baseline",
+        "assets/create-energy-consumption"
+      ]
+    },
+    {
+      "group": "Energy Consumption",
+      "pages": [
+        "energy-consumption/save-energy-consumption"
+      ]
+    },
+    {
+      "group": "Events",
+      "pages": [
+        "events/list-events",
+        "events/list-assets",
+        "events/list-portfolios",
+        "events/schemes"
+      ]
+    },
+    {
+      "group": "Portfolio",
+      "pages": [
+        "portfolio/create-assets",
+        "portfolio/list-portfolios",
+        "portfolio/create-portfolio"
+      ]
+    },
+    {
+      "group": "Webhooks",
+      "pages": [
+        "webhooks/list-webhooks",
+        "webhooks/create-webhook",
+        "webhooks/test-webhook",
+        "webhooks/delete-webhook"
       ]
     }
   ],
