@@ -14,3 +14,8 @@ Generate docs
 ```
 mintlify dev
 ```
+
+If openapi endpoints change
+```
+npx @mintlify/scraping@latest openapi-file api-reference/openapi.json
+```
