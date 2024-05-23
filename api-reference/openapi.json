@@ -15,9 +15,9 @@
         "tags": [
           "Assets"
         ],
-        "summary": "Create assets",
-        "description": "Create multiple asset objects",
-        "operationId": "AssetsCreateBulkAssets",
+        "summary": "Create asset",
+        "description": "Create an asset",
+        "operationId": "AssetsCreate",
         "requestBody": {
           "content": {
             "application/json": {
@@ -87,7 +87,7 @@
         "tags": [
           "Assets"
         ],
-        "summary": "Energy baseline at",
+        "summary": "Get baseline at",
         "description": "Get energy baseline for an asset at a given time",
         "operationId": "AssetsAssetIdBaselineAtTimestampGetBaseline",
         "parameters": [
@@ -173,8 +173,8 @@
         "tags": [
           "Assets"
         ],
-        "summary": "Energy baseline",
-        "description": "Get energy baseline for an asset",
+        "summary": "Get baselines",
+        "description": "Get energy baselines for an asset in a given time duration",
         "operationId": "AssetsAssetIdBaselinesGetBaselines",
         "parameters": [
           {
@@ -273,8 +273,8 @@
         "tags": [
           "Assets"
         ],
-        "summary": "Create energy consumption",
-        "description": "Save energy consumption of asset",
+        "summary": "Save energy consumption",
+        "description": "Save energy consumption of an asset",
         "operationId": "AssetsAssetIdEnergyConsumptionSaveConsumption",
         "parameters": [
           {
@@ -429,23 +429,12 @@
         "tags": [
           "Events"
         ],
-        "summary": "List events",
+        "summary": "List Events",
         "description": "Get all events",
         "operationId": "EventsGetEvents",
         "parameters": [
           {
             "name": "scheme_type",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
-          },
-          {
-            "name": "event_state",
             "in": "query",
             "schema": {
               "type": "string"
@@ -513,101 +502,12 @@
         "deprecated": false
       }
     },
-    "/events/{event_id}/assets": {
-      "get": {
-        "tags": [
-          "Events"
-        ],
-        "summary": "List assets",
-        "description": "Get all assets associated with an event",
-        "operationId": "EventsEventIdAssetsGetEventAssets",
-        "parameters": [
-          {
-            "name": "asset_state",
-            "in": "query",
-            "schema": {
-              "type": "string"
-            },
-            "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
-          },
-          {
-            "name": "event_id",
-            "in": "path",
-            "schema": {
-              "type": "integer"
-            },
-            "required": true,
-            "deprecated": false,
-            "allowEmptyValue": false,
-            "allowReserved": false
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Request fulfilled, document follows",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/EventAsset"
-                  },
-                  "type": "array"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request syntax or unsupported method",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "status_code": {
-                      "type": "integer"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "extra": {
-                      "additionalProperties": {},
-                      "type": [
-                        "null",
-                        "object",
-                        "array"
-                      ]
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "detail",
-                    "status_code"
-                  ],
-                  "description": "Validation Exception",
-                  "examples": [
-                    {
-                      "status_code": 400,
-                      "detail": "Bad Request",
-                      "extra": {}
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "deprecated": false
-      }
-    },
     "/events/{event_id}/portfolios": {
       "get": {
         "tags": [
           "Events"
         ],
-        "summary": "List portfolios",
+        "summary": "List Event Portfolios",
         "description": "Get all portfolios associated with an event",
         "operationId": "EventsEventIdPortfoliosGetEventPortfolios",
         "parameters": [
@@ -615,7 +515,8 @@
             "name": "event_id",
             "in": "path",
             "schema": {
-              "type": "integer"
+              "type": "string",
+              "format": "uuid"
             },
             "required": true,
             "deprecated": false,
@@ -685,7 +586,7 @@
         "tags": [
           "Events"
         ],
-        "summary": "Schemes",
+        "summary": "List Event Schemes",
         "description": "Get available event schemes",
         "operationId": "EventsSchemesGetEventSchemes",
         "responses": {
@@ -708,19 +609,97 @@
       }
     },
     "/portfolios/{portfolio_id}/assets": {
+      "get": {
+        "tags": [
+          "Portfolio"
+        ],
+        "summary": "Get Assets",
+        "description": "List all assets under a portfolio",
+        "operationId": "PortfoliosPortfolioIdAssetsList",
+        "parameters": [
+          {
+            "name": "portfolio_id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "deprecated": false
+      },
       "post": {
         "tags": [
           "Portfolio"
         ],
-        "summary": "Create Assets",
-        "description": "Create assets under a portfolio",
+        "summary": "Assign Assets",
+        "description": "Move assets under a portfolio",
         "operationId": "PortfoliosPortfolioIdAssetsCreate",
         "parameters": [
           {
             "name": "portfolio_id",
             "in": "path",
             "schema": {
-              "type": "string"
+              "type": "string",
+              "format": "uuid"
             },
             "required": true,
             "deprecated": false,
@@ -794,7 +773,7 @@
           "Portfolio"
         ],
         "summary": "List portfolios",
-        "description": "Get portfolios",
+        "description": "Get all portfolios",
         "operationId": "PortfoliosList",
         "responses": {
           "200": {
@@ -839,78 +818,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Portfolio"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad request syntax or unsupported method",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "properties": {
-                    "status_code": {
-                      "type": "integer"
-                    },
-                    "detail": {
-                      "type": "string"
-                    },
-                    "extra": {
-                      "additionalProperties": {},
-                      "type": [
-                        "null",
-                        "object",
-                        "array"
-                      ]
-                    }
-                  },
-                  "type": "object",
-                  "required": [
-                    "detail",
-                    "status_code"
-                  ],
-                  "description": "Validation Exception",
-                  "examples": [
-                    {
-                      "status_code": 400,
-                      "detail": "Bad Request",
-                      "extra": {}
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        },
-        "deprecated": false
-      }
-    },
-    "/users": {
-      "post": {
-        "tags": [
-          "Users"
-        ],
-        "summary": "Create User",
-        "description": "Create a user on equiwatt",
-        "operationId": "UsersCreateUser",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/User"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Document created, URL follows",
-            "headers": {},
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/User"
                 }
               }
             }
@@ -1051,27 +958,105 @@
         "deprecated": false
       }
     },
-    "/webhooks/test": {
-      "post": {
+    "/webhooks/{webhook_id}": {
+      "get": {
         "tags": [
           "Webhooks"
         ],
-        "summary": "Test webhook",
-        "description": "Test a webhook by sending a test payload",
-        "operationId": "WebhooksTestTest",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WebhookTest"
+        "summary": "Get webhook",
+        "description": "Get details of a subscribed webhook",
+        "operationId": "WebhooksWebhookIdGetWebhook",
+        "parameters": [
+          {
+            "name": "webhook_id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Request fulfilled, document follows",
+            "headers": {},
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Webhook"
+                }
               }
             }
           },
-          "required": true
+          "400": {
+            "description": "Bad request syntax or unsupported method",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "status_code": {
+                      "type": "integer"
+                    },
+                    "detail": {
+                      "type": "string"
+                    },
+                    "extra": {
+                      "additionalProperties": {},
+                      "type": [
+                        "null",
+                        "object",
+                        "array"
+                      ]
+                    }
+                  },
+                  "type": "object",
+                  "required": [
+                    "detail",
+                    "status_code"
+                  ],
+                  "description": "Validation Exception",
+                  "examples": [
+                    {
+                      "status_code": 400,
+                      "detail": "Bad Request",
+                      "extra": {}
+                    }
+                  ]
+                }
+              }
+            }
+          }
         },
+        "deprecated": false
+      },
+      "delete": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Delete webhook",
+        "description": "Unsubscribe from a webhook",
+        "operationId": "WebhooksWebhookIdUnsubscribe",
+        "parameters": [
+          {
+            "name": "webhook_id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "required": true,
+            "deprecated": false,
+            "allowEmptyValue": false,
+            "allowReserved": false
+          }
+        ],
         "responses": {
-          "201": {
-            "description": "Document created, URL follows",
+          "204": {
+            "description": "Request fulfilled, nothing follows",
             "headers": {}
           },
           "400": {
@@ -1116,20 +1101,21 @@
         "deprecated": false
       }
     },
-    "/webhooks/{webhook_id}": {
-      "delete": {
+    "/webhooks/{webhook_id}/test": {
+      "post": {
         "tags": [
           "Webhooks"
         ],
-        "summary": "Delete webhook",
-        "description": "Unsubscribe from a webhook",
-        "operationId": "WebhooksWebhookIdUnsubscribe",
+        "summary": "Test webhook",
+        "description": "\nSend a test payload to a subscribed webhook endpoint.\n\nFor each of the events listed in the request payload, a test payload would be sent to the webhook URL.\nThis can be used to test your endpoints while setting up the webhooks.\n",
+        "operationId": "WebhooksWebhookIdTestTest",
         "parameters": [
           {
             "name": "webhook_id",
             "in": "path",
             "schema": {
-              "type": "integer"
+              "type": "string",
+              "format": "uuid"
             },
             "required": true,
             "deprecated": false,
@@ -1137,9 +1123,22 @@
             "allowReserved": false
           }
         ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            }
+          },
+          "required": true
+        },
         "responses": {
-          "204": {
-            "description": "Request fulfilled, nothing follows",
+          "201": {
+            "description": "Document created, URL follows",
             "headers": {}
           },
           "400": {
@@ -1194,16 +1193,6 @@
           },
           "name": {
             "type": "string"
-          },
-          "user_id": {
-            "oneOf": [
-              {
-                "type": "null"
-              },
-              {
-                "type": "string"
-              }
-            ]
           }
         },
         "type": "object",
@@ -1221,15 +1210,15 @@
           "timestamp": {
             "type": "integer"
           },
-          "baseline": {
+          "value": {
             "type": "number"
           }
         },
         "type": "object",
         "required": [
           "asset_id",
-          "baseline",
-          "timestamp"
+          "timestamp",
+          "value"
         ],
         "title": "AssetEnergyBaseline"
       },
@@ -1271,52 +1260,51 @@
       },
       "Event": {
         "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
           "scheme": {
             "$ref": "#/components/schemas/EventScheme"
           },
-          "event_id": {
+          "name": {
+            "type": "string"
+          },
+          "start_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "end_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "event_type": {
             "type": "integer"
           },
-          "state": {
-            "type": "string"
+          "event_running_type": {
+            "type": "integer"
           }
         },
         "type": "object",
         "required": [
-          "event_id",
+          "end_time",
+          "event_running_type",
+          "event_type",
+          "id",
+          "name",
           "scheme",
-          "state"
+          "start_time"
         ],
         "title": "Event"
       },
-      "EventAsset": {
-        "properties": {
-          "asset_id": {
-            "type": "string"
-          },
-          "state": {
-            "type": "string"
-          }
-        },
-        "type": "object",
-        "required": [
-          "asset_id",
-          "state"
-        ],
-        "title": "EventAsset"
-      },
       "EventScheme": {
         "properties": {
-          "id": {
-            "type": "string"
-          },
           "name": {
             "type": "string"
           }
         },
         "type": "object",
         "required": [
-          "id",
           "name"
         ],
         "title": "EventScheme"
@@ -1324,24 +1312,36 @@
       "Portfolio": {
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "format": "uuid"
           },
           "name": {
             "type": "string"
           },
           "description": {
-            "type": "string"
+            "oneOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string"
+              }
+            ]
           },
-          "created": {
-            "type": "integer"
+          "created_time": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string"
           }
         },
         "type": "object",
         "required": [
-          "created",
-          "description",
+          "created_time",
           "id",
-          "name"
+          "name",
+          "status"
         ],
         "title": "Portfolio"
       },
@@ -1351,25 +1351,6 @@
             "type": "string"
           },
           "description": {
-            "type": "string"
-          }
-        },
-        "type": "object",
-        "required": [
-          "description",
-          "name"
-        ],
-        "title": "PortfolioIn"
-      },
-      "User": {
-        "properties": {
-          "user_id": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "email": {
             "oneOf": [
               {
                 "type": "null"
@@ -1382,20 +1363,17 @@
         },
         "type": "object",
         "required": [
-          "name",
-          "user_id"
+          "name"
         ],
-        "title": "User"
+        "title": "PortfolioIn"
       },
       "Webhook": {
         "properties": {
           "id": {
-            "type": "integer"
+            "type": "string",
+            "format": "uuid"
           },
           "url": {
-            "type": "string"
-          },
-          "secret": {
             "type": "string"
           },
           "events": {
@@ -1409,7 +1387,6 @@
         "required": [
           "events",
           "id",
-          "secret",
           "url"
         ],
         "title": "Webhook"
@@ -1419,9 +1396,6 @@
           "url": {
             "type": "string"
           },
-          "secret": {
-            "type": "string"
-          },
           "events": {
             "items": {
               "type": "string"
@@ -1432,29 +1406,9 @@
         "type": "object",
         "required": [
           "events",
-          "secret",
           "url"
         ],
         "title": "WebhookIn"
-      },
-      "WebhookTest": {
-        "properties": {
-          "id": {
-            "type": "integer"
-          },
-          "events": {
-            "items": {
-              "type": "string"
-            },
-            "type": "array"
-          }
-        },
-        "type": "object",
-        "required": [
-          "events",
-          "id"
-        ],
-        "title": "WebhookTest"
       }
     }
   }

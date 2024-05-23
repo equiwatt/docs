@@ -42,13 +42,13 @@
       ]
     },
     {
-      "group": "Assets",
-      "pages": [
-        "assets/create-assets",
-        "assets/energy-baseline-at",
-        "assets/energy-baseline",
-        "assets/create-energy-consumption"
-      ]
+    "group": "Assets",
+    "pages": [
+      "assets/create-asset",
+      "assets/get-baseline-at",
+      "assets/get-baselines",
+      "assets/save-energy-consumption"
+    ]
     },
     {
       "group": "Energy Consumption",
@@ -60,15 +60,15 @@
       "group": "Events",
       "pages": [
         "events/list-events",
-        "events/list-assets",
-        "events/list-portfolios",
-        "events/schemes"
+        "events/list-event-portfolios",
+        "events/list-event-schemes"
       ]
     },
     {
       "group": "Portfolio",
       "pages": [
-        "portfolio/create-assets",
+        "portfolio/get-assets",
+        "portfolio/assign-assets",
         "portfolio/list-portfolios",
         "portfolio/create-portfolio"
       ]
@@ -78,8 +78,9 @@
       "pages": [
         "webhooks/list-webhooks",
         "webhooks/create-webhook",
-        "webhooks/test-webhook",
-        "webhooks/delete-webhook"
+        "webhooks/get-webhook",
+        "webhooks/delete-webhook",
+        "webhooks/test-webhook"
       ]
     }
   ],
